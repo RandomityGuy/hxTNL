@@ -1,0 +1,5 @@
+-cp src
+-main Main
+--library datachannel
+--library colyseus-websocket
+--hl bin/main.hl
