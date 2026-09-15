@@ -18,7 +18,7 @@ abstract class NetObject extends NetBase {
 	var netIndex:Int;
 	var serverObject:NetObject;
 	var owningConnection:GhostConnection;
-	var ghostInfos:Array<GhostInfo>;
+	var ghostInfos:Array<GhostInfo> = [];
 
 	var netFlags:Int;
 

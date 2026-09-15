@@ -13,6 +13,8 @@ class Building extends NetObject {
 	var game:TestGame;
 	var rect:Bounds;
 
+	var obj:h2d.Graphics;
+
 	public function new() {
 		rect = new Bounds();
 		rect.x = Math.random();
@@ -23,6 +25,12 @@ class Building extends NetObject {
 		game = null;
 
 		netFlags |= Ghostable;
+
+		obj = new h2d.Graphics();
+		obj.beginFill(0x0000FF);
+		obj.drawRect(rect.x * ExampleMain.instance.s2d.width, rect.y * ExampleMain.instance.s2d.height, rect.width * ExampleMain.instance.s2d.width,
+			rect.height * ExampleMain.instance.s2d.height);
+		obj.endFill();
 	}
 
 	public override function remove() {
@@ -36,6 +44,7 @@ class Building extends NetObject {
 	public function addToGame(game:TestGame) {
 		game.buildings.push(this);
 		this.game = game;
+		this.game.scene.addChild(obj);
 	}
 
 	public override function onGhostAdd(gc:GhostConnection):Bool {
@@ -60,6 +69,12 @@ class Building extends NetObject {
 			rect.yMin = bs.readFloat();
 			rect.xMax = bs.readFloat();
 			rect.yMax = bs.readFloat();
+
+			obj.clear();
+			obj.beginFill(0x0000FF);
+			obj.drawRect(rect.x * ExampleMain.instance.s2d.width, rect.y * ExampleMain.instance.s2d.height, rect.width * ExampleMain.instance.s2d.width,
+				rect.height * ExampleMain.instance.s2d.height);
+			obj.endFill();
 		}
 	}
 }

@@ -33,6 +33,7 @@ class Player extends NetObject {
 	var game:TestGame;
 
 	var playerType:PlayerType;
+	var obj:h2d.Graphics;
 
 	public function new() {
 		startPos = new Vector(Math.random(), Math.random(), 0);
@@ -44,6 +45,11 @@ class Player extends NetObject {
 		playerType = TypeClient;
 		netFlags |= Ghostable;
 		game = null;
+
+		obj = new h2d.Graphics();
+		obj.beginFill(0xFF0000);
+		obj.drawCircle(0, 0, 20);
+		obj.endFill();
 	}
 
 	public override function remove() {
@@ -60,7 +66,12 @@ class Player extends NetObject {
 		this.game = game;
 		if (playerType == TypeMyClient) {
 			game.clientPlayer = this;
+			obj.clear();
+			obj.beginFill(0x00FF00);
+			obj.drawCircle(0, 0, 3);
+			obj.endFill();
 		}
+		this.game.scene.addChild(obj);
 	}
 
 	public override function onGhostAdd(gc:GhostConnection):Bool {
@@ -141,6 +152,7 @@ class Player extends NetObject {
 			}
 		}
 		renderPos.load(startPos.add(endPos.sub(startPos).multiply(t)));
+		obj.setPosition(renderPos.x * ExampleMain.instance.s2d.width, renderPos.y * ExampleMain.instance.s2d.height);
 	}
 
 	public override function onGhostAvailable(gc:GhostConnection) {

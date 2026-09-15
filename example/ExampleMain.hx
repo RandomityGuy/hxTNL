@@ -10,9 +10,13 @@ import net.NetInterface;
 import examplenet.TestConnection;
 
 class ExampleMain extends App {
+	public static var instance:ExampleMain;
+
 	override function init() {
 		super.init();
 		engine.backgroundColor = 0x202020;
+
+		instance = this;
 
 		var font = hxd.res.DefaultFont.get();
 
@@ -24,7 +28,7 @@ class ExampleMain extends App {
 
 		var isServer = args[0] == "--host";
 
-		TestGame.instance = new TestGame(isServer);
+		TestGame.instance = new TestGame(isServer, s2d);
 
 		NetInterface.setConfiguration("0.0.0.0", ["stun:stun.l.google.com:19302"], "ws://127.0.0.1:8080");
 
@@ -53,6 +57,14 @@ class ExampleMain extends App {
 	override function dispose() {
 		RTC.finalize();
 		super.dispose();
+	}
+
+	override function render(e:h3d.Engine) {
+		super.render(e);
+
+		#if hl
+		e.driver.present();
+		#end
 	}
 
 	static function main() {
