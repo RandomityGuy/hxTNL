@@ -194,7 +194,7 @@ class EventConnection extends NetConnection {
 			bs.writeFlag(true);
 
 			if (!bs.writeFlag(first.seqCount == prevSeq + 1))
-				bs.writeInt(first.seqCount, 7);
+				bs.writeInt(first.seqCount & 0x7F, 7);
 			prevSeq = first.seqCount;
 
 			var start = bs.getBitPosition();
@@ -245,6 +245,7 @@ class EventConnection extends NetConnection {
 					seq = (prevSeq + 1) & 0x7F;
 				else
 					seq = bs.readInt(7);
+				prevSeq = seq;
 			}
 
 			var classId = bs.readInt(eventClassBitSize);
@@ -263,13 +264,13 @@ class EventConnection extends NetConnection {
 			}
 
 			evt.unpack(this, bs);
-			
+
 			if (unguaranteedPhase) {
 				if (connectionState == Connected)
 					evt.process(this);
 				continue;
 			}
-			seq |= (nextSendEventSeq & ~0x7F);
+			seq |= (nextRecvEventSeq & ~0x7F);
 			if (seq < nextRecvEventSeq)
 				seq += 128;
 
@@ -281,13 +282,15 @@ class EventConnection extends NetConnection {
 			var found = false;
 			for (i in 0...this.waitSeqEvents.length) {
 				if (this.waitSeqEvents[i].seqCount >= note.seqCount) {
-					this.waitSeqEvents.insert(i, note);
+					if (this.waitSeqEvents[i].seqCount != note.seqCount) // dont do duplicates
+						this.waitSeqEvents.insert(i, note);
 					found = true;
 					break;
 				}
 			}
-			if (!found)
+			if (!found) {
 				this.waitSeqEvents.push(note);
+			}
 		}
 
 		while (waitSeqEvents.length > 0 && waitSeqEvents[0].seqCount == nextRecvEventSeq) {
@@ -306,8 +309,11 @@ class EventConnection extends NetConnection {
 
 		var note:EventNote = {
 			event: event,
-			seqCount: event.guarantee == GuaranteedOrdered ? nextSendEventSeq++ : -1
+			seqCount: event.guarantee == GuaranteedOrdered ? nextSendEventSeq : -1
 		};
+
+		if (event.guarantee == GuaranteedOrdered)
+			nextSendEventSeq++;
 
 		if (event.guarantee == GuaranteedOrdered) {
 			sendEventQueue.push(note);

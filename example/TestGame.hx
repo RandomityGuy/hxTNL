@@ -38,10 +38,20 @@ class TestGame {
 		}
 	}
 
+	var acc = 0.0;
+
 	public function update(t:Float) {
 		for (p in players)
 			p.update(t);
 		lastTime += t;
+
+		acc += t;
+
+		while (acc > 0.032) {
+			if (connectionToServer != null)
+				moveMyPlayerTo(new Vector(scene.mouseX / scene.width, scene.mouseY / scene.height));
+			acc -= 0.032;
+		}
 	}
 
 	public function moveMyPlayerTo(pos:Vector) {

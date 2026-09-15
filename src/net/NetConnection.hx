@@ -272,7 +272,7 @@ class NetConnection extends NetBase {
 		if (windowFull() || !isDataToTransmit())
 			return;
 
-		var ob = new OutputBitStream();
+		var ob = new OutputBitStream(currentPacketSendSize);
 		writeRawPacket(ob, DataPacket);
 		send(ob.getBytes());
 	}

@@ -68,7 +68,7 @@ class Player extends NetObject {
 			game.clientPlayer = this;
 			obj.clear();
 			obj.beginFill(0x00FF00);
-			obj.drawCircle(0, 0, 3);
+			obj.drawCircle(0, 0, 20);
 			obj.endFill();
 		}
 		this.game.scene.addChild(obj);
