@@ -1,0 +1,7 @@
+--library heaps
+--library colyseus-websocket
+--library datachannel
+--main ExampleMain
+-cp example
+-p src
+--js bin/example.js

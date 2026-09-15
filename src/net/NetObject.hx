@@ -25,6 +25,14 @@ abstract class NetObject extends NetBase {
 	static var isInitialUpdate = false;
 	static var dirtyList:Map<NetObject, Bool> = [];
 
+	public function remove() {
+		for (g in ghostInfos)
+			g.connection.detachObject(g);
+		if (dirtyMaskBits != 0) {
+			dirtyList.remove(this);
+		}
+	}
+
 	public function setMaskBits(orMask:Int) {
 		if (dirtyMaskBits == 0) {
 			dirtyList.set(this, true);

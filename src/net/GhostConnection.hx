@@ -181,7 +181,7 @@ class GhostConnection extends EventConnection {
 
 		var notify:GhostPacketNotify = cast note;
 
-		notify.ghostList = null;
+		notify.ghostList = [];
 
 		if (!doesGhostFrom())
 			return;

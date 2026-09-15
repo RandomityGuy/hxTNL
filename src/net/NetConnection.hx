@@ -286,14 +286,12 @@ class NetConnection extends NetBase {
 	}
 
 	function sendPingPacket() {
-		trace("Send Ping");
 		var bs = new OutputBitStream();
 		writeRawPacket(bs, PingPacket);
 		send(bs.getBytes());
 	}
 
 	function sendAckPacket() {
-		trace("Send Ack");
 		var bs = new OutputBitStream();
 		writeRawPacket(bs, AckPacket);
 		send(bs.getBytes());
@@ -449,13 +447,9 @@ class NetConnection extends NetBase {
 		}
 	}
 
-	function packetReceived(note:PacketNotify) {
-		trace('packet received');
-	}
+	function packetReceived(note:PacketNotify) {}
 
-	function packetDropped(note:PacketNotify) {
-		trace('packet dropped');
-	}
+	function packetDropped(note:PacketNotify) {}
 
 	public function prepareWritePacket() {}
 

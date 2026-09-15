@@ -24,10 +24,10 @@ class EventNote {
 class EventConnection extends NetConnection {
 	public static inline var MinimumPaddingBits:Int = 128;
 
-	var sendEventQueue:Array<EventNote>;
+	var sendEventQueue:Array<EventNote> = [];
 	var unorderedSendEventQueue:haxe.ds.List<EventNote>;
-	var waitSeqEvents:Array<EventNote>;
-	var notifyEventList:Array<EventNote>;
+	var waitSeqEvents:Array<EventNote> = [];
+	var notifyEventList:Array<EventNote> = [];
 
 	var nextSendEventSeq:Int = 0;
 	var nextRecvEventSeq:Int = 0;
@@ -38,6 +38,7 @@ class EventConnection extends NetConnection {
 
 	public function new() {
 		super();
+		unorderedSendEventQueue = new haxe.ds.List<EventNote>();
 	}
 
 	public override function writeConnectRequest(bytes:BytesOutput) {

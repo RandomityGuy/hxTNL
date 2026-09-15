@@ -1,0 +1,8 @@
+--library heaps
+--library hlsdl
+--library colyseus-websocket
+--library datachannel
+--main ExampleMain
+-cp example
+-p src
+--hl bin/example.hl

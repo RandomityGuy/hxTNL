@@ -18,10 +18,7 @@ class NetClassDBMacro {
 		}
 
 		for (netClass in netClasses) {
-			var p:TypePath = {
-				pack: netClass.klass.pack,
-				name: netClass.klass.name
-			};
+			var path:Array<String> = netClass.klass.pack.concat([netClass.klass.name]);
 
 			var classType = switch (netClass.classType) {
 				case "ClassNone": NetClassType.ClassNone;
@@ -33,8 +30,7 @@ class NetClassDBMacro {
 			};
 
 			var classId = netClass.classId;
-
-			var constructorFn = macro new NetClassRep($i{netClass.klass.name}, $v{netClass.klass.name}, $i{netClass.classType}, $v{classId});
+			var constructorFn = macro new NetClassRep($p{path}, $v{netClass.klass.name}, $i{netClass.classType}, $v{classId});
 			classTypeMacros[classType].push(macro $v{classId} => $e{constructorFn});
 
 			if (!classTypeMap.exists(netClass.classType))
