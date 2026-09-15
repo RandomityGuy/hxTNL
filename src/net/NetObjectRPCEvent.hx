@@ -42,7 +42,7 @@ class NetObjectRPCEvent extends RPCEvent {
 
 	public override function process(conn:EventConnection) {
 		var allowed = direction == DirAny;
-		allowed = allowed && (direction == DirServerToClient && !conn.isHost || direction == DirClientToServer && conn.isHost);
+		allowed = allowed || (direction == DirServerToClient && !conn.isHost || direction == DirClientToServer && conn.isHost);
 		if (allowed) {
 			var argStream = new InputBitStream(argData);
 

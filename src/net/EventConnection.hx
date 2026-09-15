@@ -263,7 +263,7 @@ class EventConnection extends NetConnection {
 			}
 
 			evt.unpack(this, bs);
-
+			
 			if (unguaranteedPhase) {
 				if (connectionState == Connected)
 					evt.process(this);

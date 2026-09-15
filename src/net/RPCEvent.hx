@@ -14,7 +14,7 @@ class RPCEvent extends NetEvent {
 	public var argData:Bytes;
 
 	public function new() {
-		super(GuaranteedOrdered, DirUnset);
+		super(GuaranteedOrdered, DirAny);
 	}
 
 	public function pack(conn:EventConnection, bs:OutputBitStream) {
@@ -40,7 +40,7 @@ class RPCEvent extends NetEvent {
 
 	public function process(conn:EventConnection) {
 		var allowed = direction == DirAny;
-		allowed = allowed && (direction == DirServerToClient && !conn.isHost || direction == DirClientToServer && conn.isHost);
+		allowed = allowed || (direction == DirServerToClient && !conn.isHost || direction == DirClientToServer && conn.isHost);
 		if (allowed) {
 			var argStream = new InputBitStream(argData);
 			conn.performRPC(funcId, argStream);

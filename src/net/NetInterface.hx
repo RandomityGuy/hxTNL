@@ -104,6 +104,7 @@ class NetInterface {
 	public static function processConnections() {
 		var curTime = time();
 
+		NetObject.collapseDirtyList();
 		for (conn in connections)
 			conn.checkPacketSend(false, curTime);
 

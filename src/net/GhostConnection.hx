@@ -232,8 +232,10 @@ class GhostConnection extends EventConnection {
 		}
 
 		var sendSize = 1;
-		while ((maxIndex >>= 1) != 0)
+		while (maxIndex > 1) {
 			sendSize++;
+			maxIndex >>= 1;
+		}
 		if (sendSize < 3)
 			sendSize = 3;
 
